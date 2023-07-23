@@ -50,6 +50,7 @@ async function run() {
         //    client.connect();
 
         const collegesCollection = client.db('admiBucketDB').collection('colleges')
+        const userCollection = client.db('admiBucketDB').collection('user')
 
 
         app.get('/colleges', async (req, res) => {
@@ -61,6 +62,20 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
             const result = await collegesCollection.findOne(query)
+            res.send(result);
+        })
+
+
+        app.get('/users', async (req, res) => {
+            const result = await userCollection.find().toArray();
+            res.send(result)
+        })
+
+
+        // send user data to mongodb 
+        app.post('/users', async (req, res) => {
+            const newUser = req.body;
+            const result = await userCollection.insertOne(newUser);
             res.send(result);
         })
 
