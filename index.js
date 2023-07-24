@@ -52,6 +52,7 @@ async function run() {
         const collegesCollection = client.db('admiBucketDB').collection('colleges')
         const userCollection = client.db('admiBucketDB').collection('user')
         const studentCollection = client.db('admiBucketDB').collection('admission')
+        const reviewCollection = client.db('admiBucketDB').collection('review')
 
 
         app.get('/colleges', async (req, res) => {
@@ -69,6 +70,10 @@ async function run() {
 
         app.get('/users', async (req, res) => {
             const result = await userCollection.find().toArray();
+            res.send(result)
+        })
+        app.get('/reviews', async (req, res) => {
+            const result = await reviewCollection.find().toArray();
             res.send(result)
         })
         app.get('/admission', async (req, res) => {
@@ -94,6 +99,12 @@ async function run() {
         app.post('/admission', async (req, res) => {
             const newStudent = req.body;
             const result = await studentCollection.insertOne(newStudent);
+            res.send(result);
+        })
+        // send user data to mongodb 
+        app.post('/reviews', async (req, res) => {
+            const newReview = req.body;
+            const result = await reviewCollection.insertOne(newReview);
             res.send(result);
         })
 
